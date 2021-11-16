@@ -2,10 +2,10 @@ var http = require('http');
 var mysql = require('mysql');
 
 var conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "school-socialert"
+    host: "mysql102.unoeuro.com",
+    user: "sachafanefjord_dk",
+    password: "wRybkdEAfG6r",
+    database: "sachafanefjord_dk_db_serverprog"
 });
 
 var server = http.createServer(function(req, res) {
