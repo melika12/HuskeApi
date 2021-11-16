@@ -10,7 +10,7 @@ var conn = mysql.createConnection({
 
 var server = http.createServer(function(req, res) {
     conn.connect(function(err) {
-        conn.query("SELECT * FROM posts", function(err, data) {
+        conn.query("SELECT * FROM Notes", function(err, data) {
             res.write(JSON.stringify(data));
             res.end();
         });
