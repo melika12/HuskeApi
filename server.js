@@ -8,7 +8,7 @@ var conn = mysql.createConnection({
     database: "sachafanefjord_dk_db_serverprog"
 });
 
-var server = http.createServer(function(req, res) {
+/*var server = http.createServer(function(req, res) {
     conn.connect(function(err) {
         conn.query("SELECT * FROM Notes", function(err, data) {
             res.write(JSON.stringify(data));
@@ -16,5 +16,6 @@ var server = http.createServer(function(req, res) {
         });
     });
 });
+server.listen(8080);*/
 
-server.listen(8080);
+
