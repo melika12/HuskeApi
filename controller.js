@@ -1,6 +1,7 @@
 // controller.js
 // Logic behind the functionalities
 const config = require('./server.js');
+var storage = window.sessionStorage;
 
 module.exports = class Controller {
     // getting all notes
@@ -133,16 +134,42 @@ module.exports = class Controller {
     
     // updating a user
     updateUser(id, userData) {
+        if(storage.getItem("LoggedIn")) {
+            var data = JSON.parse(userData);
+            return new Promise((resolve, reject) => {
+                // get the note
+                config.conn.query("UPDATE User SET Name = '" + data["name"] + "', Password = '" + data["password"] + "' WHERE ID = " + id, function(err, data) {
+                    if(err){
+                        reject(`User with id ${id} not found`);
+                    } else {
+                        resolve(`User with id ${id} was successfully updated`);
+                    }
+                });
+            });
+        }
+    }   
+    
+    //____________________________________________Login/out queries______________________________________________
+
+    // login
+    login(userData) {
         var data = JSON.parse(userData);
         return new Promise((resolve, reject) => {
             // get the note
-            config.conn.query("UPDATE User SET Name = '" + data["name"] + "', Password = '" + data["password"] + "' WHERE ID = " + id, function(err, data) {
+            config.conn.query("SELECT Name FROM User WHERE Name = '" + data["name"] + "'AND Password = '" + data["password"] + "'", function(err, data) {
                 if(err){
-                    reject(`User with id ${id} not found`);
+                    reject(`User with ${data["name"]} does not exist`);
                 } else {
-                    resolve(`User with id ${id} was successfully updated`);
+                    storage.setItem("LoggedIn", true);
+                    resolve(`User with ${data["name"]} was successfully logged in`);
                 }
             });
         });
-    }    
+    }   
+
+    // logout
+    logout() {
+        storage.removeItem("LoggedIn");
+        storage.clear();
+    }       
 }

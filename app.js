@@ -161,6 +161,37 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
+    //____________________________________________Login/out calls______________________________________________
+
+    // /login : POST
+    else if (req.url === "/login" && req.method === "POST") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            // get the data sent along
+            let userData = await getReqData(req);
+
+            const user = await controller.login(userData);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+    
+    // /logout : POST
+    else if (req.url === "/logout" && req.method === "POST") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            controller.logout();
+            res.write("The user has been logged out");
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+    
     // No route present
     else {
         res.writeHead(404, { "Content-Type": "application/json" });
