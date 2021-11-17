@@ -30,6 +30,20 @@ module.exports = class Controller {
         });
     }
 
+    // getting a single user
+    getUser(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("SELECT * FROM User WHERE id = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
     // getting all notes
     getListOfUsers() {
         return new Promise((resolve, reject) => {
