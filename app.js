@@ -37,11 +37,11 @@ const server = http.createServer(async (req, res) => {
     else if (req.url === "/note/add" && req.method === "POST") {
         
         // get the name, time of event and description from the body
-        let noteData = await getReqData(req);
         
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
         try {
+            let noteData = await getReqData(req);
             let note = await controller.createNote(noteData);
             res.write(JSON.stringify(note));
         } catch (error) {
