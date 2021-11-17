@@ -57,6 +57,19 @@ module.exports = class Controller {
         });
     }
 
+    // deleting a note
+    deleteNote(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("SELECT * FROM User WHERE id = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(`Note with id ${id} was deleted successfully`);
+                }
+            });
+        });
+    }    
 
     // creating a todo
     async createTodo(todo) {

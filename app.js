@@ -61,13 +61,15 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
-    // /api/todos/:id : DELETE
-    else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "DELETE") {
+    // /note/delete/:id : DELETE
+    else if (req.url.match(/\/note\/delete\/([0-9]+)/) && req.method === "DELETE") {
         try {
             // get the id from url
             const id = req.url.split("/")[3];
-            // delete todo
-            let message = await new Todo().deleteTodo(id);
+            // delete note
+            var controller = new Controller();
+            const message = await controller.deleteNote(id);
+
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the message
