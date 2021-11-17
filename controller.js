@@ -30,6 +30,22 @@ module.exports = class Controller {
         });
     }
 
+
+    //________________________________________________________________________User querys__________________________
+
+    // getting all notes
+    getListOfUsers() {
+        return new Promise((resolve, reject) => {
+            config.conn.query("SELECT * FROM User", function(err, data) {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+    
     // getting a single user
     getUser(id) {
         return new Promise((resolve, reject) => {
@@ -44,12 +60,13 @@ module.exports = class Controller {
         });
     }
 
-    // getting all notes
-    getListOfUsers() {
+    // deleting a user
+    deleteUser(id) {
         return new Promise((resolve, reject) => {
-            config.conn.query("SELECT * FROM User", function(err, data) {
+            // get the note
+            config.conn.query(" DELETE FROM User WHERE  ID = " + id, function(err, data) {
                 if(err){
-                    reject(err);
+                    reject(`Note with id ${id} not found`);
                 } else {
                     resolve(data);
                 }

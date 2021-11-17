@@ -60,6 +60,19 @@ const server = http.createServer(async (req, res) => {
         }
         res.end();
     }
+    // /user/delete/:id : DELETE
+    else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const id = req.url.split("/")[3];
+            const user = await controller.deleteUser(id);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
 
     // /note/delete/:id : DELETE
     else if (req.url.match(/\/note\/delete\/([0-9]+)/) && req.method === "DELETE") {
