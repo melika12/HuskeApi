@@ -33,6 +33,23 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
+    // /note/add/ : CREATE
+    else if (req.url === "/note/add" && req.method === "POST") {
+        
+        // get the name, time of event and description from the body
+        let noteData = getReqData(req);
+        
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const note = await controller.createNote(JSON.parse(noteData));
+            res.write(JSON.stringify(note));
+        } catch (error) {
+            res.write("ERROR: " + noteData);
+        }
+        res.end();
+    }
+    
     // /api/todos/:id : DELETE
     else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "DELETE") {
         try {
@@ -46,25 +63,6 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message }));
         } catch (error) {
             // set the status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
-            // send the error
-            res.end(JSON.stringify({ message: error }));
-        }
-    }
-
-    // /api/todos/:id : UPDATE
-    else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "PATCH") {
-        try {
-            // get the id from the url
-            const id = req.url.split("/")[3];
-            // update todo
-            let updated_todo = await new Todo().updateTodo(id);
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the message
-            res.end(JSON.stringify(updated_todo));
-        } catch (error) {
-            // set the status code and content type
             res.writeHead(404, { "Content-Type": "application/json" });
             // send the error
             res.end(JSON.stringify({ message: error }));

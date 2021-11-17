@@ -30,17 +30,18 @@ module.exports = class Controller {
         });
     }
 
-    // creating a todo
-    async createTodo(todo) {
+    // creating a note
+    createNote(noteData) {
+        var note = JSON.parse(noteData);
         return new Promise((resolve, _) => {
-            // create a todo, with random id and data sent
-            let newTodo = {
-                id: Math.floor(4 + Math.random() * 10),
-                ...todo,
-            };
-
-            // return the new created todo
-            resolve(newTodo);
+            // create a note
+            config.conn.query("INSERT INTO NOTES (Name, Description) VALUES (" + note.name + ", " + note.description + ")", function(err, data) {
+                if(err){
+                    reject(`Note with name: ${note.name} could not be created`);
+                } else {
+                    resolve(data);
+                }
+            });
         });
     }
 
