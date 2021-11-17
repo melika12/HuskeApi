@@ -1,4 +1,3 @@
-var http = require('http');
 var mysql = require('mysql');
 
 config = {
@@ -18,5 +17,3 @@ conn.connect(function(err){
 module.exports ={
      conn
 }
-
-

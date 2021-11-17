@@ -18,35 +18,7 @@ const server = http.createServer(async (req, res) => {
         }
         res.end();
     }
-
-    // /user/index : GET
-    if (req.url === "/user/index" && req.method === "GET") {
-        var controller = new Controller();
-        res.writeHead(200, { "Content-Type": "application/json" });
-        try {
-            const list = await controller.getListOfUsers();
-            res.write(JSON.stringify(list));
-        } catch (error) {
-            res.write("ERROR");
-            console.log(error);
-        }
-        res.end();
-    }
-
-    // /user/index/:id : GET
-    else if (req.url.match(/\/user\/index\/([0-9]+)/) && req.method === "GET") {
-        var controller = new Controller();
-        res.writeHead(200, { "Content-Type": "application/json" });
-        try {
-            const id = req.url.split("/")[3];
-            const user = await controller.getUser(id);
-            res.write(JSON.stringify(user));
-        } catch (error) {
-            res.write(JSON.stringify({ message: error }));
-        }
-        res.end();
-    }
-
+    
     // /notes/index/:id : GET
     else if (req.url.match(/\/notes\/index\/([0-9]+)/) && req.method === "GET") {
         var controller = new Controller();
@@ -77,6 +49,65 @@ const server = http.createServer(async (req, res) => {
         }
         res.end();
     }    
+
+    //____________________________________________User calls______________________________________________
+
+    // /users/index : GET
+    if (req.url === "/users/index" && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const list = await controller.getListOfUsers();
+            res.write(JSON.stringify(list));
+        } catch (error) {
+            res.write("ERROR");
+            console.log(error);
+        }
+        res.end();
+    }
+
+    // /users/index/:id : GET
+    else if (req.url.match(/\/users\/index\/([0-9]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const id = req.url.split("/")[3];
+            const user = await controller.getUser(id);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
+    // /user/delete/:id : GET
+    else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const id = req.url.split("/")[3];
+            const user = await controller.deleteUser(id);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
+    // /user/register : GET
+    else if (req.url.match(/\/user\/register\/([A-z]+)\/([A-z]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const name = req.url.split("/")[3];
+            const password = req.url.split("/")[4];
+            const user = await controller.addUser(name, password);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
 
     // /note/edit/:id : UPDATE
     else if (req.url.match(/\/note\/edit\/([0-9]+)/) && req.method === "PATCH") {
