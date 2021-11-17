@@ -77,7 +77,7 @@ module.exports = class Controller {
     //add new user
     addUser(name, password) {
         return new Promise((resolve, reject) => {
-            config.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ name +"', '"+ password +"')", function(err, data) {
+            sconfig.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ name +"', '"+ password +"')", function(err, data) {
                 if(err){
                     reject(err);
                 } else {
@@ -89,6 +89,19 @@ module.exports = class Controller {
 
     
 
+    // deleting a note
+    deleteNote(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("DELETE FROM Notes WHERE ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(`Note with id ${id} was deleted successfully`);
+                }
+            });
+        });
+    }    
 
     // creating a todo
     async createTodo(todo) {
