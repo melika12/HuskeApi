@@ -15,7 +15,7 @@ module.exports = class Controller {
             });
         });
     }
-
+    
     // getting a single note
     getNote(id) {
         return new Promise((resolve, reject) => {
@@ -25,6 +25,35 @@ module.exports = class Controller {
                     reject(`Note with id ${id} not found`);
                 } else {
                     resolve(data);
+                }    
+            });    
+        });    
+    }    
+    
+    // deleting a note
+    deleteNote(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("DELETE FROM Notes WHERE ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(`Note with id ${id} was deleted successfully`);
+                }
+            });
+        });
+    }    
+
+    // updating a note
+    updateNote(id, noteData) {
+        var data = JSON.parse(noteData);
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("UPDATE Notes SET Name = '" + data["name"] + "', Description = '" + data["description"] + "' WHERE ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(`Note with id ${id} was successfully updated`);
                 }
             });
         });
@@ -42,6 +71,79 @@ module.exports = class Controller {
                     resolve(data);
                 }
             });
+        });
+    }
+
+    //____________________________________________User queries______________________________________________
+
+    // getting all users
+    getListOfUsers() {
+        return new Promise((resolve, reject) => {
+            config.conn.query("SELECT * FROM User", function(err, data) {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(data);
+                }    
+            });    
+        });    
+    }    
+
+    // getting a single user
+    getUser(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("SELECT * FROM User WHERE id = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }    
+            });    
+        });    
+    }    
+
+    // deleting a user
+    deleteUser(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query(" DELETE FROM User WHERE  ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }    
+            });    
+        });    
+    }    
+
+    //add new user
+    addUser(name, password) {
+        let newName = JSON.parse(name);
+        let newPassword = JSON.parse(password);
+        return new Promise((resolve, reject) => {
+            sconfig.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ newName +"', '"+ newPassword +"')", function(err, data) {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(data);
+                }    
+            });    
+        });    
+    }    
+
+
+    // creating a todo
+    async createTodo(todo) {
+        return new Promise((resolve, _) => {
+            // create a todo, with random id and data sent
+            let newTodo = {
+                id: Math.floor(4 + Math.random() * 10),
+                ...todo,
+            };
+
+            // return the new created todo
+            resolve(newTodo);
         });
     }
 
