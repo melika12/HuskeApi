@@ -71,6 +71,21 @@ module.exports = class Controller {
         });
     }    
 
+    // updating a note
+    updateNote(id, noteData) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("UPDATE Notes SET Name = '" + noteData["name"] + "', Description = '" + noteData["description"] + "' WHERE ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(`Note with id ${id} was successfully updated`);
+                }
+            });
+        });
+    }
+
+
     // creating a todo
     async createTodo(todo) {
         return new Promise((resolve, _) => {
