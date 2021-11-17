@@ -92,22 +92,21 @@ module.exports = class Controller {
     deleteUser(id) {
         return new Promise((resolve, reject) => {
             // get the note
-            config.conn.query(" DELETE FROM User WHERE  ID = " + id, function(err, data) {
+            config.conn.query(" DELETE FROM User WHERE ID = " + id, function(err, data) {
                 if(err){
-                    reject(`Note with id ${id} not found`);
+                    reject(`User with id ${id} not found`);
                 } else {
-                    resolve(data);
+                    resolve(`User with id ${id} was deleted successfully`);
                 }    
             });    
         });    
     }    
 
     //add new user
-    addUser(name, password) {
-        let newName = JSON.parse(name);
-        let newPassword = JSON.parse(password);
+    addUser(userData) {
+        var user = JSON.parse(userData);
         return new Promise((resolve, reject) => {
-            sconfig.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ newName +"', '"+ newPassword +"')", function(err, data) {
+            config.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ user["name"] +"', '"+ user["password"] +"')", function(err, data) {
                 if(err){
                     reject(err);
                 } else {
@@ -115,50 +114,20 @@ module.exports = class Controller {
                 }    
             });    
         });    
+    }
+    
+    // updating a user
+    updateUser(id, userData) {
+        var data = JSON.parse(userData);
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query("UPDATE User SET Name = '" + data["name"] + "', Password = '" + data["password"] + "' WHERE ID = " + id, function(err, data) {
+                if(err){
+                    reject(`User with id ${id} not found`);
+                } else {
+                    resolve(`User with id ${id} was successfully updated`);
+                }
+            });
+        });
     }    
-
-
-    // creating a todo
-    async createTodo(todo) {
-        return new Promise((resolve, _) => {
-            // create a todo, with random id and data sent
-            let newTodo = {
-                id: Math.floor(4 + Math.random() * 10),
-                ...todo,
-            };
-
-            // return the new created todo
-            resolve(newTodo);
-        });
-    }
-
-    // updating a todo
-    async updateTodo(id) {
-        return new Promise((resolve, reject) => {
-            // get the todo.
-            let todo = data.find((todo) => todo.id === parseInt(id));
-            // if no todo, return an error
-            if (!todo) {
-                reject(`No todo with id ${id} found`);
-            }
-            //else, update it by setting completed to true
-            todo["completed"] = true;
-            // return the updated todo
-            resolve(todo);
-        });
-    }
-
-    // deleting a todo
-    async deleteTodo(id) {
-        return new Promise((resolve, reject) => {
-            // get the todo
-            let todo = data.find((todo) => todo.id === parseInt(id));
-            // if no todo, return an error
-            if (!todo) {
-                reject(`No todo with id ${id} found`);
-            }
-            // else, return a success message
-            resolve(`Todo deleted successfully`);
-        });
-    }
 }

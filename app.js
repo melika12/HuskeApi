@@ -50,6 +50,23 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }    
 
+    // /note/edit/:id : PATCH
+    else if (req.url.match(/\/note\/edit\/([0-9]+)/) && req.method === "PATCH") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            // get the data sent along
+            let noteData = await getReqData(req);
+
+            const id = req.url.split("/")[3];
+            const note = await controller.updateNote(id, noteData);
+            res.write(JSON.stringify(note));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
     //____________________________________________User calls______________________________________________
 
     // /users/index : GET
@@ -80,8 +97,8 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
-    // /user/delete/:id : GET
-    else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "GET") {
+    // /user/delete/:id : DELETE
+    else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "DELETE") {
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
         try {
@@ -94,14 +111,15 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
-    // /user/register : GET
-    else if (req.url.match(/\/user\/register\/([A-z]+)\/([A-z]+)/) && req.method === "GET") {
+    // /user/register : POST
+    else if (req.url === "/user/register" && req.method === "POST") {
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
         try {
-            const name = req.url.split("/")[3];
-            const password = req.url.split("/")[4];
-            const user = await controller.addUser(name, password);
+            // get the data sent along
+            let userData = await getReqData(req);
+
+            const user = await controller.addUser(userData);
             res.write(JSON.stringify(user));
         } catch (error) {
             res.write(JSON.stringify({ message: error }));
@@ -109,33 +127,21 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
-    // /note/edit/:id : UPDATE
-    else if (req.url.match(/\/note\/edit\/([0-9]+)/) && req.method === "PATCH") {
+    // /user/edit/:id : PATCH
+    else if (req.url.match(/\/user\/edit\/([0-9]+)/) && req.method === "PATCH") {
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
         try {
             // get the data sent along
-            let noteData = await getReqData(req);
+            let userData = await getReqData(req);
 
             const id = req.url.split("/")[3];
-            const note = await controller.updateNote(id, noteData);
-            res.write(JSON.stringify(note));
+            const user = await controller.updateUser(id, userData);
+            res.write(JSON.stringify(user));
         } catch (error) {
             res.write(JSON.stringify({ message: error }));
         }
         res.end();
-    }
-
-    // /api/todos/ : POST
-    else if (req.url === "/api/todos" && req.method === "POST") {
-        // get the data sent along
-        let todo_data = await getReqData(req);
-        // create the todo
-        let todo = await new Todo().createTodo(JSON.parse(todo_data));
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the todo
-        res.end(JSON.stringify(todo));
     }
 
     // No route present
