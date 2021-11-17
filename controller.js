@@ -73,9 +73,10 @@ module.exports = class Controller {
 
     // updating a note
     updateNote(id, noteData) {
+        var data = JSON.parse(noteData);
         return new Promise((resolve, reject) => {
             // get the note
-            config.conn.query("UPDATE Notes SET Name = '" + noteData["name"] + "', Description = '" + noteData["description"] + "' WHERE ID = " + id, function(err, data) {
+            config.conn.query("UPDATE Notes SET Name = '" + data["name"] + "', Description = '" + data["description"] + "' WHERE ID = " + id, function(err, data) {
                 if(err){
                     reject(`Note with id ${id} not found`);
                 } else {
