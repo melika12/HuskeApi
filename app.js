@@ -53,7 +53,7 @@ const server = http.createServer(async (req, res) => {
     //____________________________________________User calls______________________________________________
 
     // /user/index : GET
-    if (req.url === "/user/index" && req.method === "GET") {
+    if (req.url === "/users/index" && req.method === "GET") {
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
         try {
