@@ -30,6 +30,20 @@ module.exports = class Controller {
         });
     }
 
+    // getting all notes
+    getListOfUsers() {
+        return new Promise((resolve, reject) => {
+            config.conn.query("SELECT * FROM User", function(err, data) {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+
     // creating a todo
     async createTodo(todo) {
         return new Promise((resolve, _) => {

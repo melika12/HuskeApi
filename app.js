@@ -19,6 +19,21 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
+    // /user/index : GET
+    if (req.url === "/user/index" && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const list = await controller.getListOfUsers();
+            res.write(JSON.stringify(list));
+        } catch (error) {
+            res.write("ERROR");
+            console.log(error);
+        }
+        res.end();
+    }
+
+
     // /notes/index/:id : GET
     else if (req.url.match(/\/notes\/index\/([0-9]+)/) && req.method === "GET") {
         var controller = new Controller();
