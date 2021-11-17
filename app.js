@@ -74,6 +74,21 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
+    // /user/add/
+    else if (req.url.match(/\/user\/add\/([A-z]+)\/([A-z]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const name = req.url.split("/")[3];
+            const password = req.url.split("/")[4];
+            const user = await controller.addUser(name, password);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
     // /api/todos/:id : DELETE
     else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "DELETE") {
         try {

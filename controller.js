@@ -33,7 +33,7 @@ module.exports = class Controller {
 
     //________________________________________________________________________User querys__________________________
 
-    // getting all notes
+    // getting all users
     getListOfUsers() {
         return new Promise((resolve, reject) => {
             config.conn.query("SELECT * FROM User", function(err, data) {
@@ -45,7 +45,7 @@ module.exports = class Controller {
             });
         });
     }
-    
+
     // getting a single user
     getUser(id) {
         return new Promise((resolve, reject) => {
@@ -67,6 +67,19 @@ module.exports = class Controller {
             config.conn.query(" DELETE FROM User WHERE  ID = " + id, function(err, data) {
                 if(err){
                     reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    //add new user
+    addUser(name, password) {
+        return new Promise((resolve, reject) => {
+            config.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ name +"', '"+ password +"')", function(err, data) {
+                if(err){
+                    reject(err);
                 } else {
                     resolve(data);
                 }
