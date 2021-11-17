@@ -61,7 +61,7 @@ module.exports = class Controller {
     deleteNote(id) {
         return new Promise((resolve, reject) => {
             // get the note
-            config.conn.query("SELECT * FROM User WHERE id = " + id, function(err, data) {
+            config.conn.query("DELETE FROM Notes WHERE ID = " + id, function(err, data) {
                 if(err){
                     reject(`Note with id ${id} not found`);
                 } else {
