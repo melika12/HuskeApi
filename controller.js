@@ -59,6 +59,21 @@ module.exports = class Controller {
         });
     }
 
+    // creating a note
+    createNote(noteData) {
+        let note = JSON.parse(noteData);
+        return new Promise((resolve, reject) => {
+            // create a note
+            config.conn.query("INSERT INTO Notes (Name, Description) VALUES ('" + note["name"] + "', '" + note["description"] + "')", function(err, data) {
+                if(err){
+                    reject(`Note with name: ${note["name"]} could not be created`);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
     //____________________________________________User queries______________________________________________
 
     // getting all users
