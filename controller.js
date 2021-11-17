@@ -32,12 +32,12 @@ module.exports = class Controller {
 
     // creating a note
     createNote(noteData) {
-        var note = JSON.parse(noteData);
-        return new Promise((resolve, _) => {
+        let note = JSON.parse(noteData);
+        return new Promise((resolve, reject) => {
             // create a note
-            config.conn.query("INSERT INTO NOTES (Name, Description) VALUES (" + note.name + ", " + note.description + ")", function(err, data) {
+            config.conn.query("INSERT INTO Notes (Name, Description) VALUES ('" + note["name"] + "', '" + note["description"] + "')", function(err, data) {
                 if(err){
-                    reject(`Note with name: ${note.name} could not be created`);
+                    reject(`Note with name: ${note["name"]} could not be created`);
                 } else {
                     resolve(data);
                 }
