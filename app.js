@@ -33,6 +33,23 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
+    // /note/add : CREATE
+    else if (req.url === "/note/add" && req.method === "POST") {
+        
+        // get the name, time of event and description from the body
+        
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            let noteData = await getReqData(req);
+            let note = await controller.createNote(noteData);
+            res.write(JSON.stringify(note));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
     // /note/delete/:id : DELETE
     else if (req.url.match(/\/note\/delete\/([0-9]+)/) && req.method === "DELETE") {
         var controller = new Controller();
