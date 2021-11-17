@@ -44,6 +44,20 @@ module.exports = class Controller {
         });
     }
 
+    // deleting a user
+    deleteUser(id) {
+        return new Promise((resolve, reject) => {
+            // get the note
+            config.conn.query(" DELETE FROM User WHERE  ID = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
     // getting all notes
     getListOfUsers() {
         return new Promise((resolve, reject) => {

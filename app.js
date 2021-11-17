@@ -60,6 +60,19 @@ const server = http.createServer(async (req, res) => {
         }
         res.end();
     }
+    // /user/delete/:id : DELETE
+    else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const id = req.url.split("/")[3];
+            const user = await controller.deleteUser(id);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
 
     // /api/todos/:id : DELETE
     else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "DELETE") {
@@ -67,7 +80,7 @@ const server = http.createServer(async (req, res) => {
             // get the id from url
             const id = req.url.split("/")[3];
             // delete todo
-            let message = await new Todo().deleteTodo(id);
+            let message = await new Todo().delUser(id);
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the message
