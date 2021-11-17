@@ -104,8 +104,10 @@ module.exports = class Controller {
 
     //add new user
     addUser(name, password) {
+        let newName = JSON.parse(name);
+        let newPassword = JSON.parse(password);
         return new Promise((resolve, reject) => {
-            sconfig.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ name +"', '"+ password +"')", function(err, data) {
+            sconfig.conn.query("INSERT INTO User (Name, Password) VALUES ('"+ newName +"', '"+ newPassword +"')", function(err, data) {
                 if(err){
                     reject(err);
                 } else {
