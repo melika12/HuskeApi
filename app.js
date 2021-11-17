@@ -1,37 +1,36 @@
 const http = require("http");
-const Todo = require("./controller.js");
+const Controller = require("./controller.js");
 const { getReqData } = require("./utils");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 const server = http.createServer(async (req, res) => {
-    // /api/todos : GET
-    if (req.url === "/note/index" && req.method === "GET") {
-        // get the todos.
-        const todos = await new Todo().getTodos();
-        // set the status code, and content-type
+    // /notes/index : GET
+    if (req.url === "/notes/index" && req.method === "GET") {
+        var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
-        // send the data
-        res.end(JSON.stringify(todos));
+        try {
+            const list = await controller.getListOfNotes();
+            res.write(JSON.stringify(list));
+        } catch (error) {
+            res.write("ERROR");
+            console.log(error);
+        }
+        res.end();
     }
 
-    // /api/todos/:id : GET
-    else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "GET") {
+    // /notes/index/:id : GET
+    else if (req.url.match(/\/notes\/index\/([0-9]+)/) && req.method === "GET") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
         try {
-            // get id from url
             const id = req.url.split("/")[3];
-            // get todo
-            const todo = await new Todo().getTodo(id);
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the data
-            res.end(JSON.stringify(todo));
+            const note = await controller.getNote(id);
+            res.write(JSON.stringify(note));
         } catch (error) {
-            // set the status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
-            // send the error
-            res.end(JSON.stringify({ message: error }));
+            res.write(JSON.stringify({ message: error }));
         }
+        res.end();
     }
 
     // /api/todos/:id : DELETE

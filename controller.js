@@ -1,26 +1,32 @@
 // controller.js
 // Logic behind the functionalities
-const data = require("./server.js");
+const config = require('./server.js');
 
-class Controller {
-    // getting all todos
-    async listOfNotes() {
-        // return all todos
-        return new Promise((resolve, _) => resolve(data));
+module.exports = class Controller {
+    // getting all notes
+    getListOfNotes() {
+        return new Promise((resolve, reject) => {
+            config.conn.query("SELECT * FROM Notes", function(err, data) {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
     }
 
-    // getting a single todo
-    async listOfNotes(id) {
+    // getting a single note
+    getNote(id) {
         return new Promise((resolve, reject) => {
-            // get the todo
-            let todo = data.find((todo) => todo.id === parseInt(id));
-            if (todo) {
-                // return the todo
-                resolve(todo);
-            } else {
-                // return an error
-                reject(`Todo with id ${id} not found `);
-            }
+            // get the note
+            config.conn.query("SELECT * FROM Notes WHERE id = " + id, function(err, data) {
+                if(err){
+                    reject(`Note with id ${id} not found`);
+                } else {
+                    resolve(data);
+                }
+            });
         });
     }
 
@@ -68,4 +74,3 @@ class Controller {
         });
     }
 }
-module.exports = Controller;

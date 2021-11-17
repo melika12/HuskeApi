@@ -1,21 +1,22 @@
 var http = require('http');
 var mysql = require('mysql');
 
-var conn = mysql.createConnection({
-    host: "mysql102.unoeuro.com",
-    user: "sachafanefjord_dk",
-    password: "wRybkdEAfG6r",
-    database: "sachafanefjord_dk_db_serverprog"
+config = {
+   host: 'mysql102.unoeuro.com',
+   user: 'sachafanefjord_dk',
+   password: 'wRybkdEAfG6r',
+   database: 'sachafanefjord_dk_db_serverprog'
+}
+var conn = mysql.createConnection(config);
+conn.connect(function(err){
+  if (err){
+    console.log('error connecting:' + err.stack);
+  }
+  console.log('connected successfully to DB.');
 });
 
-/*var server = http.createServer(function(req, res) {
-    conn.connect(function(err) {
-        conn.query("SELECT * FROM Notes", function(err, data) {
-            res.write(JSON.stringify(data));
-            res.end();
-        });
-    });
-});
-server.listen(8080);*/
+module.exports ={
+     conn
+}
 
 
