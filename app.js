@@ -63,24 +63,20 @@ const server = http.createServer(async (req, res) => {
 
     // /note/delete/:id : DELETE
     else if (req.url.match(/\/note\/delete\/([0-9]+)/) && req.method === "DELETE") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
         try {
             // get the id from url
             const id = req.url.split("/")[3];
             // delete note
-            var controller = new Controller();
             const message = await controller.deleteNote(id);
-
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the message
-            res.end(JSON.stringify({ message }));
+            res.write(JSON.stringify(message));
         } catch (error) {
-            // set the status code and content-type
             res.writeHead(404, { "Content-Type": "application/json" });
-            // send the error
-            res.end(JSON.stringify({ message: error }));
+            res.write(JSON.stringify({ message: error }));
         }
-    }
+        res.end();
+    }    
 
     // /api/todos/:id : UPDATE
     else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "PATCH") {
@@ -116,7 +112,7 @@ const server = http.createServer(async (req, res) => {
     // No route present
     else {
         res.writeHead(404, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "Route not found" }));
+        res.end();
     }
 });
 
