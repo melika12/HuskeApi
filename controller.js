@@ -146,7 +146,7 @@ module.exports = class Controller {
         });
     }  
     
-    //____________________________________________Login/Logout______________________________________________
+    //____________________________________________Login______________________________________________
     login(userData) {
         var data = JSON.parse(userData);
         return new Promise((resolve, reject) => {
@@ -159,9 +159,5 @@ module.exports = class Controller {
                 }
             });
         });
-    }
-
-    logout() {
-
     }
 }
