@@ -4,8 +4,11 @@ const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 8080;
 
+let session = {};
+
 const server = http.createServer(async (req, res) => {
     // /notes/index : GET
+    
     if (req.url === "/notes/index" && req.method === "GET") {
         var controller = new Controller();
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -154,6 +157,33 @@ const server = http.createServer(async (req, res) => {
 
             const id = req.url.split("/")[3];
             const user = await controller.updateUser(id, userData);
+            res.write(JSON.stringify(user));
+        } catch (error) {
+            res.write(JSON.stringify({ message: error }));
+        }
+        res.end();
+    }
+
+    //____________________________________________Login/Logout______________________________________________
+
+    else if (req.url === "/login" && req.method === "POST") {
+        var controller = new Controller();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            // get the data sent along
+            let userData = await getReqData(req);
+            console.log(userData);
+            const user = await controller.login(userData);
+            console.log(user);
+            
+            const uuid = user["Id"];
+            res.writeHead(200, {
+                'Set-Cookie': `loginsession=${uuid}`,
+                'Content-Type': 'text/plain'
+            });
+
+            session[uuid] = user;
+
             res.write(JSON.stringify(user));
         } catch (error) {
             res.write(JSON.stringify({ message: error }));

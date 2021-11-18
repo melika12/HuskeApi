@@ -144,5 +144,24 @@ module.exports = class Controller {
                 }
             });
         });
-    }    
+    }  
+    
+    //____________________________________________Login/Logout______________________________________________
+    login(userData) {
+        var data = JSON.parse(userData);
+        return new Promise((resolve, reject) => {
+            config.conn.query("SELECT Id FROM User WHERE Name = '"+ data["name"] +"' AND Password = '"+ data["password"] +"'", function(err, data) {
+                if(err) {
+                    console.log(err);
+                    reject(`User not found`);
+                } else {
+                    resolve(data[0]);
+                }
+            });
+        });
+    }
+
+    logout() {
+
+    }
 }
