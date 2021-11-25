@@ -10,7 +10,7 @@ const server = http.createServer(async (req, res) => {
     // /notes/index : GET
     
     if (req.url === "/notes/index" && req.method === "GET") {
-        if (req.headers.cookie === cookie) {
+        //if (req.headers.cookie === cookie) {
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -20,15 +20,15 @@ const server = http.createServer(async (req, res) => {
                 res.write("ERROR");
                 console.log(error);
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
     
     // /notes/index/:id : GET
     else if (req.url.match(/\/notes\/index\/([0-9]+)/) && req.method === "GET") {
-        if (req.headers.cookie === cookie) {
+        //if (req.headers.cookie === cookie) {
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -38,33 +38,33 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /note/add : CREATE
     else if (req.url === "/note/add" && req.method === "POST") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
                 let noteData = await getReqData(req);
                 let note = await controller.createNote(noteData);
-                res.write(JSON.stringify(note));
+                res.write("Note added to the database");
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /note/delete/:id : DELETE
     else if (req.url.match(/\/note\/delete\/([0-9]+)/) && req.method === "DELETE") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -77,15 +77,15 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(404, { "Content-Type": "application/json" });
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }    
 
     // /note/edit/:id : PATCH
-    else if (req.url.match(/\/note\/edit\/([0-9]+)/) && req.method === "PATCH") {
-        if (req.headers.cookie === cookie) {        
+    else if (req.url.match(/\/note\/edit\/([0-9]+)/) && req.method === "PUT") {
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -98,9 +98,9 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
@@ -108,7 +108,7 @@ const server = http.createServer(async (req, res) => {
 
     // /users/index : GET
     if (req.url === "/users/index" && req.method === "GET") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -118,15 +118,15 @@ const server = http.createServer(async (req, res) => {
                 res.write("ERROR");
                 console.log(error);
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /users/index/:id : GET
     else if (req.url.match(/\/users\/index\/([0-9]+)/) && req.method === "GET") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -136,15 +136,15 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /user/delete/:id : DELETE
     else if (req.url.match(/\/user\/delete\/([0-9]+)/) && req.method === "DELETE") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -154,15 +154,15 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /user/register : POST
     else if (req.url === "/user/register" && req.method === "POST") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -174,15 +174,15 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
     // /user/edit/:id : PATCH
     else if (req.url.match(/\/user\/edit\/([0-9]+)/) && req.method === "PATCH") {
-        if (req.headers.cookie === cookie) {        
+        //if (req.headers.cookie === cookie) {        
             var controller = new Controller();
             res.writeHead(200, { "Content-Type": "application/json" });
             try {
@@ -195,9 +195,9 @@ const server = http.createServer(async (req, res) => {
             } catch (error) {
                 res.write(JSON.stringify({ message: error }));
             }
-        } else {
+        /*} else {
             res.write("Your session has expired - please login again");
-        }
+        }*/
         res.end();
     }
 
@@ -211,13 +211,13 @@ const server = http.createServer(async (req, res) => {
             let userData = await getReqData(req);
             const user = await controller.login(userData);
             
-            const uuid = Number("57913824"+user["Id"]+"7946");
+            /*const uuid = Number("57913824"+user["Id"]+"7946");
             res.writeHead(200, {
                 'Set-Cookie': `loginsession=${uuid}`,
                 'Expires': new Date(new Date().getTime()+10000).toUTCString(),
                 'Content-Type': 'text/plain'
             });
-            cookie = "loginsession="+uuid;
+            cookie = "loginsession="+uuid;*/
 
             res.write('You have successfully logged in');
         } catch (error) {
